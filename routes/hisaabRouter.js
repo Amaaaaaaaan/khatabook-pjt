@@ -6,7 +6,8 @@ const {createHisaabController,
     deleteController,
     editController,
     passcodeController,
-    verifyController
+    verifyController,
+    updateHisaabController
 } = require("../controllers/hisaabController");
 
 
@@ -16,13 +17,15 @@ const {
  } = require("../middlewares/auth-middleware");
 
 router.get("/create",isloggedin,hisaabpageController);
-router.get("/view/:id",isloggedin,showhisaabController);
 router.post("/create",isloggedin,createHisaabController);
+
+router.get("/view/:id",isloggedin,showhisaabController);
 router.get("/passcode/:id",isloggedin,passcodeController);
 router.post("/view/:id",isloggedin,verifyController);
+
 router.get("/delete/:id", deleteController);
 router.get("/edit/:id",isloggedin,editController);
-
+router.post("/edit/:id",isloggedin,updateHisaabController);
 
 
 

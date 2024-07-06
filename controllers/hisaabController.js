@@ -79,3 +79,34 @@ module.exports.editController = async function(req,res){
 }
 
 
+
+module.exports.updateHisaabController = async function(req, res) {
+    let { id } = req.params; 
+    let { title, description, shareable, passcode, editpermissions } = req.body;
+
+    
+    shareable = shareable === "on" ? true : false;
+    editpermissions = editpermissions === "on" ? true : false;
+
+    try {
+        let updatedHisaab = await hisaabModel.findOneAndUpdate(
+            { _id: id, user: req.user._id }, 
+            {
+                title,
+                description,    
+                shareable,
+                passcode,
+                editpermissions
+            },
+            { new: true } // Return the updated document
+        );
+
+        if (!updatedHisaab) {
+            return res.status(404).send('Hisaab not found');
+        }
+
+        res.redirect("/profile");
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+};
