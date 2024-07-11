@@ -35,39 +35,39 @@ module.exports.hisaabpageController = async function(req,res){
 }
 
 
-module.exports.showhisaabController = async function(req,res){
-    let hisaab = await hisaabModel.findById(req.params.id);
-    console.log(hisaab);
-    res.render("hisaab", {hisaab});
+module.exports.readhisaabController = async function(req,res){
+    let hisaab = await hisaabModel.findOne({_id:req.params.id})
+    .populate("user");
+    if(hisaab.encrypted){
+        return res.render("passcode",{hisaab})
+    }else{
+   return res.render("hisaab", {hisaab});
+}
 }
 
-module.exports.passcodeController = async function(req,res){
-    let hisaab = await hisaabModel.findOne({_id:req.params.id});
-
-    res.render("passcode",{hisaab});
-}
-
-module.exports.verifyController = async function(req,res){
-    let hisaab = await hisaabModel.findOne({_id:req.params.id});
-    let passcode = req.body.passcode;
-    if(passcode === hisaab.passcode){
-        res.render("hisaab", {hisaab});
+module.exports.verifyhisaabController = async function(req,res){
+    let hisaab = await hisaabModel.findOne({_id:req.params.id})
+    .populate("user");
+    if(hisaab.passcode == req.body.passcode){
+     res.redirect(`/hisaab/${req.params.id}`);
     }
     else{
-        res.send("Invalid passcode")
+     res.send("Invalid passcode")
     }
-    
+ }
+
+
+ module.exports.readVerifiedhisaabController = async function(req,res){
+    let hisaab = await hisaabModel.findOne({_id:req.params.id})
+    .populate("user");
+   
+   return res.render("hisaab", {hisaab});
 }
-
-
-
-
 
 module.exports.deleteController = async function(req, res) {
      let deleted = await hisaabModel.findOneAndDelete({_id:req.params.id});
      console.log(deleted)
-        res.redirect("/profile");
-     
+        res.redirect("/profile");    
 };
 
 
