@@ -54,11 +54,9 @@
                     <h3 class="font-medium text-lg">
                         <%= hisaab.title %>
                     </h3>
-                    <% if(!hisaab.encrypted){ %>
+            
                     <a class="text-zinc-400 text-sm hover:text-zinc-700" href="/hisaab/view/<%= hisaab._id %>">view hisaab</a>
-                    <% } else { %>
-                        <a class="text-zinc-400 text-sm hover:text-zinc-700" href="/hisaab/passcode/<%= hisaab._id %>">view hisaab</a>
-                        <% } %>
+                   
                       
                 </div>
             </div>
