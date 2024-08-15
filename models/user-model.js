@@ -30,6 +30,10 @@ const userSchema = mongoose.Schema({
         maxlength: [128, 'Password must be at most 128 characters long'],
         select: false
       },
+      image: {
+        type: String, // Stores the URL or path to the image
+        required: false // Set to `true` if you want to make it a required field
+      },
     hisaabs:[{ type: mongoose.Schema.Types.ObjectId, ref: "hisaab" }]
 })
 
