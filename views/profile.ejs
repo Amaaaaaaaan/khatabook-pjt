@@ -1,7 +1,7 @@
 <%- include('./partials/header.ejs') %>
     <div class="w-full px-20 py-10">
         <img class="h-24 w-24 mb-4 -mt-8 rounded-full object-cover" src="data:image/png;base64,<%= user.image %>" alt="Uploaded Image">
-        
+
         <h1 class="text-3xl mb-4">Hey, <%= user.username %>👋🏻 </h1>
         <h3 class="opacity-50 mb-10">showing all hisaabs, till now.</h3>
         <div>
@@ -79,7 +79,5 @@
                     document.querySelector(".dates").classList.add("hidden");
                 }
             })
-
-             
     </script>
     <%- include('./partials/footer.ejs') %>

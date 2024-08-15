@@ -23,10 +23,10 @@ module.exports.registerController = async function(req, res) {
         let salt = await bcrypt.genSalt(10);
         let hashed = await bcrypt.hash(password, salt);
 
-       
+        // Handle file upload
         let imageUrl = '';
         if (req.file) {
-            imageUrl = req.file.buffer.toString('base64'); 
+            imageUrl = req.file.buffer.toString('base64'); // Example: store as base64 string
         }
 
         user = await userModel.create({
@@ -34,7 +34,7 @@ module.exports.registerController = async function(req, res) {
             username,
             email,
             password: hashed,
-            image: imageUrl, 
+            image: imageUrl, // Save the image URL if uploaded
         });
 
         let token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_KEY);
