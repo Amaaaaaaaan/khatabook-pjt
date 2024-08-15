@@ -1,5 +1,8 @@
 const express = require ("express");
 const router = express.Router();
+
+const upload = require('../config/multer-config');
+
 const {homepageController ,
      registerpageController,
      registerController,
@@ -19,10 +22,8 @@ router.get("/logout",logoutController);
 router.get("/profile",isloggedin,profileController);
 
 
-
-
-
-router.post("/register",registerController);
+router.post("/register", upload.single('image'),registerController);
 router.post("/login",loginController);
+
 
 module.exports = router;

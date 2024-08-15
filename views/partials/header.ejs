@@ -11,19 +11,22 @@
 </head>
 
 <body>
-    <div class="navbar flex justify-between w-full px-20 py-10">
-        <h3>Khaatabook</h3>
-        <div class="absolute hidden top-10 left-1/2  -translate-x-1/2 -translate-y-1/2 px-3 py-2 bg-red-500 rounded-md">
-            <h3 class="text-red-200">
-                some error
-            </h3>
-        </div>
-        <% var loggedin = typeof loggedin!=='undefined' ? loggedin : true %> 
-        <% if (loggedin){ %>
-        <div class="links flex gap-4">
-            <a href="/">Home</a>
-            <a href="/hisaab/create">Create new hisaab</a>
-            <a class="text-red-500" href="/logout">Logout</a>
-        </div>
-        <% } %>
+   <div class="navbar flex justify-between items-center w-full px-20 py-10">
+    <div class="flex items-center">
+        <img src="https://play-lh.googleusercontent.com/CyHUZUKP0_qx7IEHYQDoNKAdhoC9uzATzKMe2ZaMW1ixXEha3k1AuXEc4C4GfVyQz_8" alt="Khaatabook Logo" class="h-8 w-8 mr-2">
+        <h3 class="text-xl">Khaatabook</h3>
     </div>
+    <div class="absolute hidden top-10 left-1/2  -translate-x-1/2 -translate-y-1/2 px-3 py-2 bg-red-500 rounded-md">
+        <h3 class="text-red-200">
+            some error
+        </h3>
+    </div>
+    <% var loggedin = typeof loggedin!=='undefined' ? loggedin : true %> 
+    <% if (loggedin){ %>
+    <div class="links flex gap-4">
+        <a href="/">Home</a>
+        <a href="/hisaab/create">Create new hisaab</a>
+        <a class="text-red-500" href="/logout">Logout</a>
+    </div>
+    <% } %>
+</div>

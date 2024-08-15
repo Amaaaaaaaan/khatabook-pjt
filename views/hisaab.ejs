@@ -13,9 +13,11 @@
                <% if(hisaab.encrypted) { %>
                 <button class="bg-blue-500 text-white px-4 py-2 rounded">Encrypted</button>
                 <% } %>
-                <button class="sharebtn text-gray-700 px-4 py-2 rounded flex items-center space-x-2" onclick="copyUrl()">
+                <% if(hisaab.shareable) { %>
+                <button class="sharebtn text-gray-700 px-4 py-2 rounded flex items-center space-x-2" >
                     <span>Share as a link</span>
                 </button>
+                <% } %>
                 <a href="/hisaab/delete/<%=hisaab._id%>" class="bg-red-500 text-white px-4 py-2 rounded">Delete</a>
                 <% if(hisaab.editpermissions) { %>
                 <a href="/hisaab/edit/<%= hisaab._id %>" class="bg-yellow-400 text-white px-4 py-2 rounded">Edit</a>
@@ -30,23 +32,7 @@
 
     <script>
         
-    function copyUrl() {
-        var url = window.location.href; // Get the current URL
-        navigator.clipboard.writeText(url); // Copy the URL to clipboard
-    }
-        var timer;
-        const sharebtn = document.querySelector(".sharebtn");
-        sharebtn.addEventListener("click", function (e) {
-            clearTimeout(timer);
-
-            document.querySelector(".copieddiv")
-                .classList.remove("hidden");
-
-            timer = setTimeout(function () {
-                document.querySelector(".copieddiv")
-                    .classList.add("hidden");
-            }, 3000)
-        })
+   
     </script>
 
     <%- include('./partials/footer.ejs') %>

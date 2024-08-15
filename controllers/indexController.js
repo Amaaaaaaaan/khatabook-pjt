@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 const hisaabModel = require("../models/hisaab");
 
+const upload = require('../config/multer-config');
 module.exports.homepageController = function(req,res){
     res.render("index", {loggedin: false}); 
 }
@@ -13,33 +14,38 @@ module.exports.registerpageController = function(req,res){
     res.render("register", {loggedin: false});
 }
 
-module.exports.registerController = async function(req,res){
-    let {name,username,email,password} = req.body;
-try{
-    
+module.exports.registerController = async function(req, res) {
+    let { name, username, email, password } = req.body;
+    try {
+        let user = await userModel.findOne({ email });
+        if (user) return res.send("You already have an account, please login");
 
-    let user = await userModel.findOne({email});
-    if(user)
-        return res.send("you already have an account, please login")
+        let salt = await bcrypt.genSalt(10);
+        let hashed = await bcrypt.hash(password, salt);
 
-   let salt = await bcrypt.genSalt(10);
-   let hashed = await bcrypt.hash(password, salt);
+        // Handle file upload
+        let imageUrl = '';
+        if (req.file) {
+            imageUrl = req.file.buffer.toString('base64'); // Example: store as base64 string
+        }
 
-   user = await userModel.create({
-    name,
-    username,
-    email,
-    password:hashed
-});
+        user = await userModel.create({
+            name,
+            username,
+            email,
+            password: hashed,
+            image: imageUrl, // Save the image URL if uploaded
+        });
 
-let token = jwt.sign({id:user._id, email:user._email}, process.env.JWT_KEY)
-   res.cookie("token", token);
-   res.send("account created")  
+        let token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_KEY);
+        res.cookie("token", token);
+        res.redirect("/profile");
+        console.log(user.image)
+    } catch (err) {
+        res.send(err.message);
+    }
 }
-catch (err){
-    res.send(err.message)
-}
-}
+
 module.exports.loginController = async function(req, res){
     let {email,password} = req.body;
     try{
@@ -52,8 +58,8 @@ module.exports.loginController = async function(req, res){
             return res.send("incorrect password");
         let token = jwt.sign({id:user._id, email:user._email}, process.env.JWT_KEY)
         res.cookie("token", token);
-       res.redirect("/profile")
-    }
+       res.redirect("/profile");
+}
     catch(err){
         res.send(err.message);
     }
