@@ -29,30 +29,10 @@
         <p class="text-gray-700"><%= hisaab.description %></p>
     </div>
 
+
     <script>
-      
-    document.addEventListener('DOMContentLoaded', function() {
-        const shareButton = document.querySelector('.sharebtn');
-        const copiedDiv = document.querySelector('.copieddiv');
         
-        if (shareButton) {
-            shareButton.addEventListener('click', function() {
-                // Copy the current page URL to the clipboard
-                navigator.clipboard.writeText(window.location.href);
-
-                // Show the "link copied" message
-                copiedDiv.classList.remove('hidden');
-
-                // Hide the message after 2 seconds
-                setTimeout(() => {
-                    copiedDiv.classList.add('hidden');
-                }, 2000);
-            });
-        }
-    });
-</script>
-
- 
-    
+   
+    </script>
 
     <%- include('./partials/footer.ejs') %>

@@ -66,6 +66,7 @@ module.exports.verifyhisaabController = async function(req,res){
 
 module.exports.deleteController = async function(req, res) {
      let deleted = await hisaabModel.findOneAndDelete({_id:req.params.id});
+     console.log(deleted)
         res.redirect("/profile");    
 };
 
