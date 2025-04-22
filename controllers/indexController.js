@@ -71,19 +71,38 @@ module.exports.logoutController = function(req,res){
 }
 
 module.exports.profileController = async function(req, res){
-  let byDate = Number(req.query.byDate);
-  let {startDate,endDate} = req.query;
+    try {
+        if (!req.user) {
+            return res.redirect("/"); // User is not logged in, prevent crash
+        }
 
-  byDate = byDate ? byDate :-1;
-  startDate = startDate? startDate : new Date ("1970-01-01");
-  endDate = endDate? endDate : new Date();
+        let byDate = Number(req.query.byDate);
+        let { startDate, endDate } = req.query;
 
+        byDate = byDate ? byDate : -1;
+        startDate = startDate ? startDate : new Date("1970-01-01");
+        endDate = endDate ? endDate : new Date();
 
-    let user = await userModel.findOne({email:req.user.email})
-    .populate({
-        path:"hisaabs",
-        match : {createdAt :{ $gte : new Date(startDate),  $lte : new Date(endDate)  }},
-        options:{sort:{createdAt:byDate}},
-  } );
-    res.render("profile",{user});
-}
+        // If req.user already contains populated hisaabs, no need to re-query, but okay here
+        let user = await userModel.findOne({ email: req.user.email })
+            .populate({
+                path: "hisaabs",
+                match: {
+                    createdAt: {
+                        $gte: new Date(startDate),
+                        $lte: new Date(endDate)
+                    }
+                },
+                options: { sort: { createdAt: byDate } },
+            });
+
+        if (!user) {
+            return res.redirect("/"); // Defensive coding
+        }
+
+        res.render("profile", { user });
+    } catch (err) {
+        console.error("Error in profileController:", err);
+        res.status(500).send("Something went wrong");
+    }
+};

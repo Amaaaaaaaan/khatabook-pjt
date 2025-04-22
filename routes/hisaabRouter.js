@@ -21,6 +21,7 @@ router.get("/create",isloggedin,hisaabpageController);
 router.post("/create",isloggedin,createHisaabController);
 
 router.get("/view/:id",isloggedin,readhisaabController);
+
 router.post("/verify/:id",isloggedin,verifyhisaabController);
 router.get("/:id",isloggedin,readVerifiedhisaabController);  
 

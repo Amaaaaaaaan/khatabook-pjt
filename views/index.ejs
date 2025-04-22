@@ -1,4 +1,4 @@
-<%- include('./partials/header.ejs') %>
+<!-- <%- include('./partials/header.ejs') %>
     <div class="logincontainer mt-28 w-full h-[80%] flex items-center justify-center">
         <div class="loginpanel">
             <h3 class="text-2xl mb-3">Login</h3>
@@ -12,4 +12,31 @@
             <a class="mt-5 inline-block text-blue-500" href="/register">Don't have an account ?</a>
         </div>
     </div>
-    <%- include('./partials/footer.ejs') %>
+    <%- include('./partials/footer.ejs') %> -->
+
+
+    <%- include('./partials/header.ejs') %>
+
+<div class="logincontainer mt-28 w-full h-[80%] flex items-center justify-center bg-gray-100">
+    <div class="loginpanel bg-gradient-to-r from-blue-400 to-blue-600 p-10 rounded-lg shadow-xl w-full max-w-md">
+        <h3 class="text-3xl font-semibold mb-6 text-center text-white">Login</h3>
+        
+        <form autocomplete="off" action="/login" class="flex flex-col gap-4 items-center" method="post">
+            <!-- Email or Username Input -->
+            <input class="w-full px-4 py-3 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out" type="text" placeholder="Email" name="email" required>
+
+            <!-- Password Input -->
+            <input class="w-full px-4 py-3 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out" type="password" placeholder="Password" name="password" required>
+
+            <!-- Submit Button -->
+            <input class="w-full py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition duration-300" type="submit" value="Login">
+        </form>
+
+        <!-- Register Link -->
+        <div class="mt-5 text-center">
+            <a class="text-blue-200 hover:underline" href="/register">Don't have an account? Register here</a>
+        </div>
+    </div>
+</div>
+
+<%- include('./partials/footer.ejs') %>

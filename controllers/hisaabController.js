@@ -1,6 +1,9 @@
 const userModel = require("../models/user-model");
 const hisaabModel = require("../models/hisaab");
 
+module.exports.hisaabpageController = async function(req,res){
+    res.render("create");
+}
 module.exports.createHisaabController = async function(req,res){
     let {title,description,encrypted,shareable,passcode,editpermissions} = req.body;
 
@@ -29,11 +32,6 @@ res.send(err.message)
 
    res.redirect("/profile");
 }
-
-module.exports.hisaabpageController = async function(req,res){
-    res.render("create");
-}
-
 
 module.exports.readhisaabController = async function(req,res){
     let hisaab = await hisaabModel.findOne({_id:req.params.id})
