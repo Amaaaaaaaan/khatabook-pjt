@@ -4,34 +4,33 @@ const hisaabModel = require("../models/hisaab");
 module.exports.hisaabpageController = async function(req,res){
     res.render("create");
 }
-module.exports.createHisaabController = async function(req,res){
-    let {title,description,encrypted,shareable,passcode,editpermissions} = req.body;
+module.exports.createHisaabController = async function(req, res) {
+    let { title, description, encrypted, shareable, passcode, editpermissions } = req.body;
+    encrypted = encrypted === "on" ? true : false;
+    shareable = shareable === "on" ? true : false;
+    editpermissions = editpermissions === "on" ? true : false;
 
-   encrypted = encrypted=== "on" ?true : false;
-   shareable = shareable=== "on" ?true : false;
-   editpermissions = editpermissions=== "on" ?true : false;
+    try {
+        let hisaabcreated = await hisaabModel.create({
+            title,
+            description,
+            encrypted,
+            shareable,
+            passcode,
+            editpermissions,
+            user: req.user._id
+        });
 
-  try{
-    let hisaabcreated = await hisaabModel.create({
-        title,
-        description,
-        encrypted,
-        shareable,
-        passcode,
-        editpermissions,
-        user: req.user._id
-    });
+        let user = await userModel.findById(req.user.id);
+        user.hisaabs.push(hisaabcreated._id);
+        await user.save();
 
-    let user = await userModel.findById(req.user.id);
-   user.hisaabs.push(hisaabcreated._id);
-   await user.save();
-  }
-  catch(err){
-res.send(err.message)
-  }
+        return res.redirect("/profile"); // Ensure single response
+    } catch (err) {
+        return res.send(err.message); // Send error and stop further execution
+    }
+};
 
-   res.redirect("/profile");
-}
 
 module.exports.readhisaabController = async function(req,res){
     let hisaab = await hisaabModel.findOne({_id:req.params.id})

@@ -18,7 +18,9 @@ module.exports.registerController = async function(req, res) {
     let { name, username, email, password } = req.body;
     try {
         let user = await userModel.findOne({ email });
-        if (user) return res.send("You already have an account, please login");
+        if (user) {
+            return res.send("You already have an account, please login"); // Ensure a single response
+        }
 
         let salt = await bcrypt.genSalt(10);
         let hashed = await bcrypt.hash(password, salt);
@@ -26,7 +28,7 @@ module.exports.registerController = async function(req, res) {
         // Handle file upload
         let imageUrl = '';
         if (req.file) {
-            imageUrl = req.file.buffer.toString('base64'); // Example: store as base64 string
+            imageUrl = req.file.buffer.toString('base64'); // Store as base64 string
         }
 
         user = await userModel.create({
@@ -34,36 +36,39 @@ module.exports.registerController = async function(req, res) {
             username,
             email,
             password: hashed,
-            image: imageUrl, // Save the image URL if uploaded
+            image: imageUrl,
         });
 
         let token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_KEY);
         res.cookie("token", token);
-        res.redirect("/profile");
-        console.log(user.image)
+        return res.redirect("/profile"); // Use return to prevent further code execution
     } catch (err) {
-        res.send(err.message);
+        return res.send(err.message); // Handle errors without continuing execution
     }
-}
+};
 
-module.exports.loginController = async function(req, res){
-    let {email,password} = req.body;
-    try{
-        let user = await userModel.findOne({email}).select("+password");
-        if(!user)
-            return res.send("user not found");
+
+module.exports.loginController = async function(req, res) {
+    let { email, password } = req.body;
+    try {
+        let user = await userModel.findOne({ email }).select("+password");
+        if (!user) {
+            return res.send("User not found");
+        }
 
         let result = await bcrypt.compare(password, user.password);
-        if(!result)
-            return res.send("incorrect password");
-        let token = jwt.sign({id:user._id, email:user._email}, process.env.JWT_KEY)
+        if (!result) {
+            return res.send("Incorrect password");
+        }
+
+        let token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_KEY);
         res.cookie("token", token);
-       res.redirect("/profile");
-}
-    catch(err){
-        res.send(err.message);
+        return res.redirect("/profile"); // Ensure return is used to stop further execution
+    } catch (err) {
+        return res.send(err.message); // Handle errors
     }
-}
+};
+
 
 module.exports.logoutController = function(req,res){
     res.cookie("token","");
